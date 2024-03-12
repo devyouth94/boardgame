@@ -2,6 +2,7 @@ import { BrowserRouter, useRoutes } from "react-router-dom";
 
 import Home from "~/pages/home/ui/home";
 import Main from "~/pages/main/ui/main";
+import Room from "~/pages/room/ui/room";
 import SetupProfile from "~/pages/sign/ui/setup-profile";
 import Sign from "~/pages/sign/ui/sign";
 
@@ -16,6 +17,7 @@ const Router = () => {
       ],
     },
     { path: "/main", element: <Main /> },
+    { path: "/room/:id", element: <Room /> },
   ]);
 };
 
