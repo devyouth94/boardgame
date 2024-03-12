@@ -8,15 +8,16 @@ const queryKey = {
   info: ["user-info"],
 };
 
+type useGetUserInfoReturnType = (UserMetadata & { id?: string }) | undefined;
 export const useGetUserInfo = () => {
   return useQuery({
     queryKey: queryKey.info,
     queryFn: getUserInfo,
-    select: ({ data }): UserMetadata & { id?: string } => {
+    select: ({ data }): useGetUserInfoReturnType => {
       const id = data.session?.user.id;
       const metadata = data.session?.user.user_metadata;
 
-      return { ...metadata, id };
+      return data.session ? { ...metadata, id } : undefined;
     },
   });
 };
