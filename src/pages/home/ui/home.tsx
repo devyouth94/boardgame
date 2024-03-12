@@ -13,6 +13,7 @@ const Home = () => {
 
     if (!userInfo) {
       navigate("/sign");
+      return;
     }
 
     if (userInfo && userInfo["name_verified"]) {
