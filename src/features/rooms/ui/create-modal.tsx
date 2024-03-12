@@ -77,7 +77,7 @@ const CreateModal = () => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button className="w-full">게임 생성</Button>
+        <Button className="w-full">생성하기</Button>
       </DialogTrigger>
 
       <DialogContent>

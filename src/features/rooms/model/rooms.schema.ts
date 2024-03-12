@@ -9,9 +9,11 @@ const game_type = z.enum(["FUJI_FLUSH", "PENGUIN_PARTY"]);
 const min_players = z.number().min(4).max(8);
 const max_players = z.number().min(4).max(8);
 const password = z.string().optional();
+const room_id = z.string();
 const owner_id = z.string();
 // const status = z.enum(["PENDING", "FULL", "GAME"]);
 
+export type CreateRoomForm = z.infer<typeof createRoomSchema>;
 export const createRoomSchema = z
   .object({
     game_type,
@@ -28,6 +30,7 @@ export const createRoomSchema = z
     path: ["players", "max_players"],
   });
 
+export type PostRoomReq = z.infer<typeof postRoomReqSchema>;
 export const postRoomReqSchema = z.object({
   game_type,
   min_players,
@@ -36,5 +39,9 @@ export const postRoomReqSchema = z.object({
   owner_id,
 });
 
-export type CreateRoomForm = z.infer<typeof createRoomSchema>;
-export type PostRoomReq = z.infer<typeof postRoomReqSchema>;
+export type PostEnterRoomReq = z.infer<typeof enterRoomSchema>;
+export type EnterRoomForm = z.infer<typeof enterRoomSchema>;
+export const enterRoomSchema = z.object({
+  room_id,
+  password,
+});
