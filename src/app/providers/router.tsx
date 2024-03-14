@@ -1,4 +1,4 @@
-import { BrowserRouter, useRoutes } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 
 import Home from "~/pages/home/ui/home";
 import Main from "~/pages/main/ui/main";
@@ -17,16 +17,12 @@ const Router = () => {
       ],
     },
     { path: "/main", element: <Main /> },
-    { path: "/room/:id", element: <Room /> },
+    { path: "/room/:roomId", element: <Room /> },
   ]);
 };
 
 const RouterProvider = () => {
-  return (
-    <BrowserRouter>
-      <Router />
-    </BrowserRouter>
-  );
+  return <Router />;
 };
 
 export default RouterProvider;
