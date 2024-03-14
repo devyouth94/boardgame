@@ -4,8 +4,10 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-import { setupProfileSchema, type SetupProfileForm } from "~/features/auth/model/auth.schema";
-import { useGetUserInfo, usePutUserInfo } from "~/features/auth/service/auth.query";
+import { setupProfileFormSchema, type SetupProfileForm } from "~/features/auth/model/auth.schema";
+import { usePutUserInfo } from "~/features/auth/service/auth.query";
+
+import { useGetUserInfo } from "~/entities/auth/service/auth.query";
 
 import { Button } from "~/shared/ui/button";
 import {
@@ -25,9 +27,9 @@ const SetupProfileForm = () => {
   const { mutate: putUserInfo } = usePutUserInfo();
 
   const form = useForm<SetupProfileForm>({
-    resolver: zodResolver(setupProfileSchema),
+    resolver: zodResolver(setupProfileFormSchema),
     defaultValues: {
-      name: "",
+      full_name: "",
     },
   });
 
@@ -38,12 +40,12 @@ const SetupProfileForm = () => {
     formState: { isValid, isSubmitting },
   } = form;
 
-  const onSubmit = ({ name }: SetupProfileForm) => {
+  const onSubmit = ({ full_name }: SetupProfileForm) => {
     putUserInfo(
-      { name, name_verified: true },
+      { full_name, name_verified: true },
       {
         onSuccess: (data) => {
-          toast.success(`${data.user_metadata.name}님, 어서오세요!`);
+          toast.success(`${data.full_name}님, 어서오세요!`);
           navigate("/main", { replace: true });
         },
       },
@@ -52,7 +54,7 @@ const SetupProfileForm = () => {
 
   useEffect(() => {
     if (!userInfo) return;
-    setValue("name", userInfo["name"], { shouldValidate: true });
+    setValue("full_name", userInfo["full_name"], { shouldValidate: true });
   }, [isFetching]);
 
   return (
@@ -60,7 +62,7 @@ const SetupProfileForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-[375px] space-y-2">
         <FormField
           control={control}
-          name="name"
+          name="full_name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>닉네임</FormLabel>

@@ -1,9 +1,6 @@
-import { PutUserInfoReq } from "~/features/auth/model/auth.schema";
-import { supabase } from "~/shared/api/supabase";
+import { type PutUserInfoReq } from "~/features/auth/model/auth.schema";
 
-export const getUserInfo = async () => {
-  return await supabase.auth.getSession();
-};
+import { supabase } from "~/shared/api/supabase";
 
 export const putUserInfo = async (req: PutUserInfoReq) => {
   const { data, error } = await supabase.auth.updateUser({ data: req });
@@ -11,7 +8,7 @@ export const putUserInfo = async (req: PutUserInfoReq) => {
   if (error) {
     throw error;
   } else {
-    return data.user;
+    return data.user.user_metadata;
   }
 };
 

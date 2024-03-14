@@ -1,9 +1,9 @@
-import SignInButtons from "~/features/auth/ui/sign-in-buttons";
+import SignInButton from "~/features/auth/ui/sign-in-button";
 
 const Sign = () => {
   return (
     <main className="flex h-dvh items-center justify-center px-5">
-      <SignInButtons />
+      <SignInButton />
     </main>
   );
 };

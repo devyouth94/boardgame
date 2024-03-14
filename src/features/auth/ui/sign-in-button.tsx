@@ -1,7 +1,7 @@
 import { postSignInWithGoogle } from "~/features/auth/service/auth.api";
 import { Button } from "~/shared/ui/button";
 
-const SignInButtons = () => {
+const SignInButton = () => {
   const onClickSignInWithGoogle = async () => {
     await postSignInWithGoogle();
   };
@@ -13,4 +13,4 @@ const SignInButtons = () => {
   );
 };
 
-export default SignInButtons;
+export default SignInButton;

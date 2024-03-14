@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useGetUserInfo } from "~/features/auth/service/auth.query";
+import { useGetUserInfo } from "~/entities/auth/service/auth.query";
 
 const Home = () => {
   const navigate = useNavigate();
