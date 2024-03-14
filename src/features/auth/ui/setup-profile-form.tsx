@@ -9,6 +9,7 @@ import { usePutUserInfo } from "~/features/auth/service/auth.query";
 
 import { useGetUserInfo } from "~/entities/auth/service/auth.query";
 
+import { getValidateUserName } from "~/entities/auth/service/auth.api";
 import { Button } from "~/shared/ui/button";
 import {
   Form,
@@ -40,16 +41,27 @@ const SetupProfileForm = () => {
     formState: { isValid, isSubmitting },
   } = form;
 
-  const onSubmit = ({ full_name }: SetupProfileForm) => {
-    putUserInfo(
-      { full_name, name_verified: true },
-      {
-        onSuccess: (data) => {
-          toast.success(`${data.full_name}님, 어서오세요!`);
-          navigate("/main", { replace: true });
+  const onSubmit = async ({ full_name }: SetupProfileForm) => {
+    try {
+      const { isValidate } = await getValidateUserName({ id: userInfo?.id, full_name });
+
+      if (!isValidate) {
+        toast.error("같은 이름을 가진 유저가 있어요");
+        return;
+      }
+
+      putUserInfo(
+        { full_name, name_verified: true },
+        {
+          onSuccess: (data) => {
+            toast.success(`${data.full_name}님, 어서오세요!`);
+            navigate("/main", { replace: true });
+          },
         },
-      },
-    );
+      );
+    } catch (error) {
+      toast.error("다시 시도해주세요");
+    }
   };
 
   useEffect(() => {

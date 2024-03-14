@@ -12,3 +12,9 @@ const getUserInfoResSchema = z.object({
   full_name,
   name_verified,
 });
+
+export type GetValidateUserNameReq = z.infer<typeof getValidateUserName>;
+const getValidateUserName = z.object({
+  id: id.optional(),
+  full_name,
+});
