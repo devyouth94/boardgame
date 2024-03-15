@@ -7,9 +7,9 @@ import { toast } from "sonner";
 import { setupProfileFormSchema, type SetupProfileForm } from "~/features/auth/model/auth.schema";
 import { usePutUserInfo } from "~/features/auth/service/auth.query";
 
+import { getValidateUserName } from "~/entities/auth/service/auth.api";
 import { useGetUserInfo } from "~/entities/auth/service/auth.query";
 
-import { getValidateUserName } from "~/entities/auth/service/auth.api";
 import { Button } from "~/shared/ui/button";
 import {
   Form,
@@ -30,7 +30,7 @@ const SetupProfileForm = () => {
   const form = useForm<SetupProfileForm>({
     resolver: zodResolver(setupProfileFormSchema),
     defaultValues: {
-      full_name: "",
+      nickname: "",
     },
   });
 
@@ -41,9 +41,9 @@ const SetupProfileForm = () => {
     formState: { isValid, isSubmitting },
   } = form;
 
-  const onSubmit = async ({ full_name }: SetupProfileForm) => {
+  const onSubmit = async ({ nickname }: SetupProfileForm) => {
     try {
-      const { isValidate } = await getValidateUserName({ id: userInfo?.id, full_name });
+      const { isValidate } = await getValidateUserName({ id: userInfo?.id, nickname });
 
       if (!isValidate) {
         toast.error("같은 이름을 가진 유저가 있어요");
@@ -51,10 +51,10 @@ const SetupProfileForm = () => {
       }
 
       putUserInfo(
-        { full_name, name_verified: true },
+        { nickname, nickname_verified: true },
         {
           onSuccess: (data) => {
-            toast.success(`${data.full_name}님, 어서오세요!`);
+            toast.success(`${data.nickname}님, 어서오세요!`);
             navigate("/main", { replace: true });
           },
         },
@@ -66,7 +66,7 @@ const SetupProfileForm = () => {
 
   useEffect(() => {
     if (!userInfo) return;
-    setValue("full_name", userInfo["full_name"], { shouldValidate: true });
+    setValue("nickname", userInfo["full_name"], { shouldValidate: true });
   }, [isFetching]);
 
   return (
@@ -74,14 +74,14 @@ const SetupProfileForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-[375px] space-y-2">
         <FormField
           control={control}
-          name="full_name"
+          name="nickname"
           render={({ field }) => (
             <FormItem>
               <FormLabel>닉네임</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
-              <FormDescription>{`게임에 사용할 닉네임을 입력해주세요 (2글자 이상)`}</FormDescription>
+              <FormDescription>{`게임에 사용할 닉네임을 입력해주세요 (최소2자, 최대10자)`}</FormDescription>
             </FormItem>
           )}
         />

@@ -1,20 +1,22 @@
 import { z } from "zod";
 
 export const id = z.string();
-export const avatar_url = z.string();
 export const full_name = z.string();
-export const name_verified = z.boolean();
+export const avatar_url = z.string();
+export const nickname = z.string();
+export const nickname_verified = z.boolean();
 
 export type GetUserInfoRes = z.infer<typeof getUserInfoResSchema>;
 const getUserInfoResSchema = z.object({
   id,
-  avatar_url,
   full_name,
-  name_verified,
+  avatar_url,
+  nickname,
+  nickname_verified,
 });
 
 export type GetValidateUserNameReq = z.infer<typeof getValidateUserName>;
 const getValidateUserName = z.object({
   id: id.optional(),
-  full_name,
+  nickname,
 });

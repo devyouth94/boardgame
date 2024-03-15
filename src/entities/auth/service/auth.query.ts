@@ -18,9 +18,10 @@ export const useGetUserInfo = () => {
       return data.session
         ? {
             id: id!,
-            avatar_url: metadata?.avatar_url,
             full_name: metadata?.full_name,
-            name_verified: metadata?.name_verified,
+            avatar_url: metadata?.avatar_url,
+            nickname: metadata?.nickname,
+            nickname_verified: metadata?.nickname_verified,
           }
         : undefined;
     },

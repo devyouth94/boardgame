@@ -16,7 +16,7 @@ const Home = () => {
       return;
     }
 
-    if (userInfo && userInfo["name_verified"]) {
+    if (userInfo && userInfo["nickname_verified"]) {
       navigate("/main");
     } else {
       navigate("/sign/setup-profile");

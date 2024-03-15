@@ -6,11 +6,11 @@ export const getUserInfo = async () => {
   return await supabase.auth.getSession();
 };
 
-export const getValidateUserName = async ({ id, full_name }: GetValidateUserNameReq) => {
+export const getValidateUserName = async ({ id, nickname }: GetValidateUserNameReq) => {
   const { data, error } = await supabase
     .from("players")
     .select()
-    .eq("name", full_name)
+    .eq("name", nickname)
     .neq("id", id)
     .select("name");
 
