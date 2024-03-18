@@ -1,3 +1,1 @@
-# 프로젝트 템플릿
-
-npm, vite, axios, shadcn, react-router-dom, zustand, react-hook-form, zod, immer, prettier, eslint, date-fns
+# supabase와 함께 보드게임 만들기
