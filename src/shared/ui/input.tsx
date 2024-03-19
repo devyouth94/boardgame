@@ -23,7 +23,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <input
           type={type === "password" && isOpen ? "text" : type}
           className={cn(
-            "flex grow outline-none placeholder:text-slate-500 disabled:cursor-not-allowed",
+            "flex w-full grow outline-none placeholder:text-slate-500 disabled:cursor-not-allowed",
             className,
           )}
           disabled={disabled}
