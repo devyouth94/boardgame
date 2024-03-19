@@ -1,21 +1,43 @@
 import * as React from "react";
 
 import { cn } from "~/shared/lib/class-name";
+import Icon from "~/shared/ui/icon";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
+  ({ className, disabled = false, type, ...props }, ref) => {
+    const [isFocus, setIsFocus] = React.useState(false);
+    const [isOpen, setIsOpen] = React.useState(false);
+
     return (
-      <input
-        type={type}
+      <section
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
         className={cn(
-          "flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300",
-          className,
+          "flex h-10 w-full items-center gap-1 rounded-md border border-slate-200 px-3 py-2 text-sm ring-offset-white",
+          isFocus && "ring-2 ring-slate-950 ring-offset-2",
+          disabled && "cursor-not-allowed opacity-50",
         )}
-        ref={ref}
-        {...props}
-      />
+      >
+        <input
+          type={type === "password" && isOpen ? "text" : type}
+          className={cn(
+            "flex grow outline-none placeholder:text-slate-500 disabled:cursor-not-allowed",
+            className,
+          )}
+          disabled={disabled}
+          spellCheck={false}
+          ref={ref}
+          {...props}
+        />
+
+        {type === "password" && (
+          <div onClick={() => setIsOpen((prev) => !prev)} className="-mr-1.5 cursor-pointer p-1.5">
+            <Icon size={18} name={isOpen ? "Unlock" : "Lock"} />
+          </div>
+        )}
+      </section>
     );
   },
 );
