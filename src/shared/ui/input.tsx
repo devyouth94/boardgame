@@ -15,7 +15,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         className={cn(
-          "flex h-10 w-full items-center gap-1 rounded-md border border-slate-200 px-3 py-2 text-sm ring-offset-white",
+          "flex h-10 items-center gap-1 rounded-md border border-slate-200 px-3 py-2 text-sm ring-offset-white",
           isFocus && "ring-2 ring-slate-950 ring-offset-2",
           disabled && "cursor-not-allowed opacity-50",
         )}
@@ -23,7 +23,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <input
           type={type === "password" && isOpen ? "text" : type}
           className={cn(
-            "flex grow outline-none placeholder:text-slate-500 disabled:cursor-not-allowed",
+            "flex w-full grow outline-none placeholder:text-slate-500 disabled:cursor-not-allowed",
             className,
           )}
           disabled={disabled}

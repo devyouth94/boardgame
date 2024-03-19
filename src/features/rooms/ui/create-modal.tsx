@@ -82,7 +82,7 @@ const CreateModal = ({ open, onClose }: ModalProps) => {
                 return (
                   <FormItem>
                     <FormLabel>{`게임 인원(최소4인~최대8인)`}</FormLabel>
-                    <section className="flex gap-1">
+                    <section className="grid grid-cols-2 gap-1">
                       <FormControl>
                         <Input
                           id="form-item-min-player"
