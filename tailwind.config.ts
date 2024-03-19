@@ -5,7 +5,11 @@ const config = {
   content: ["./src/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
-    extend: {},
+    extend: {
+      spacing: {
+        footer: "var(--height-footer)",
+      },
+    },
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
