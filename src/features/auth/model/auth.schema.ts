@@ -8,7 +8,7 @@ export const setupProfileFormSchema = z.object({
 });
 
 export type PutUserInfoReq = z.infer<typeof putUserInfoReqSchema>;
-export const putUserInfoReqSchema = z
+const putUserInfoReqSchema = z
   .object({
     nickname,
     nickname_verified,

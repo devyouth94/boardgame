@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+
 import { postSignOut } from "~/features/auth/service/auth.api";
+
 import { Button } from "~/shared/ui/button";
 
 const SignOutButton = () => {

@@ -9,18 +9,17 @@ export const getUserInfo = async () => {
 export const getValidateUserName = async ({ id, nickname }: GetValidateUserNameReq) => {
   const { data, error } = await supabase
     .from("players")
-    .select()
+    .select("name")
     .eq("name", nickname)
-    .neq("id", id)
-    .select("name");
+    .neq("id", id);
 
   if (error) {
     throw error;
   }
 
   if (data.length) {
-    return { isValidate: false };
+    return { isDuplicate: true };
   } else {
-    return { isValidate: true };
+    return { isDuplicate: false };
   }
 };

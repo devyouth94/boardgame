@@ -24,8 +24,9 @@ import { Input } from "~/shared/ui/input";
 const SetupProfileForm = () => {
   const navigate = useNavigate();
 
-  const { data: userInfo, isFetching } = useGetUserInfo();
   const { mutate: putUserInfo } = usePutUserInfo();
+
+  const { data: userInfo, isFetching } = useGetUserInfo();
 
   const form = useForm<SetupProfileForm>({
     resolver: zodResolver(setupProfileFormSchema),
@@ -43,9 +44,9 @@ const SetupProfileForm = () => {
 
   const onSubmit = async ({ nickname }: SetupProfileForm) => {
     try {
-      const { isValidate } = await getValidateUserName({ id: userInfo?.id, nickname });
+      const { isDuplicate } = await getValidateUserName({ id: userInfo?.id, nickname });
 
-      if (!isValidate) {
+      if (isDuplicate) {
         toast.error("같은 이름을 가진 유저가 있어요");
         return;
       }

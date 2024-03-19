@@ -15,8 +15,8 @@ const getUserInfoResSchema = z.object({
   nickname_verified,
 });
 
-export type GetValidateUserNameReq = z.infer<typeof getValidateUserName>;
-const getValidateUserName = z.object({
+export type GetValidateUserNameReq = z.infer<typeof getValidateUserNameSchema>;
+const getValidateUserNameSchema = z.object({
   id: id.optional(),
   nickname,
 });
