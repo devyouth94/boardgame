@@ -7,23 +7,29 @@ const useModalStore = create<ModalStore>((set) => ({
   actions: {
     onOpenModal: (Component, props) => {
       set(({ modalMap }) => {
-        modalMap.set(Component, { Component, props: { ...props, open: true } });
-        return { modalMap: new Map(modalMap) };
+        const newMap = new Map(modalMap);
+        newMap.set(Component, { Component, props: { ...props, open: true } });
+
+        return { modalMap: newMap };
       });
     },
     onCloseModal: (Component) => {
       set(({ modalMap }) => {
-        const instance = modalMap.get(Component);
+        const newMap = new Map(modalMap);
+        const instance = newMap.get(Component);
         if (instance) {
-          modalMap.set(Component, { ...instance, props: { ...instance.props, open: false } });
+          newMap.set(Component, { ...instance, props: { ...instance.props, open: false } });
         }
-        return { modalMap: new Map(modalMap) };
+
+        return { modalMap: newMap };
       });
     },
     onCleanModal: (Component) => {
       set(({ modalMap }) => {
-        modalMap.delete(Component);
-        return { modalMap: new Map(modalMap) };
+        const newMap = new Map(modalMap);
+        newMap.delete(Component);
+
+        return { modalMap: newMap };
       });
     },
     onResetModal: () => {

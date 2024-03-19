@@ -1,23 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 
+import type { ModalProps } from "~/features/modal/model/modal.schema";
 import { EnterRoomForm, enterRoomSchema } from "~/features/rooms/model/rooms.schema";
 import { usePostEnterRoom } from "~/features/rooms/service/rooms.query";
 
 import { Button } from "~/shared/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTrigger,
-} from "~/shared/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader } from "~/shared/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "~/shared/ui/form";
 import { Input } from "~/shared/ui/input";
 
-const EnterModal = () => {
+const EnterModal = ({ open, onClose }: ModalProps) => {
   const form = useForm<EnterRoomForm>({
     resolver: zodResolver(enterRoomSchema),
     defaultValues: {
@@ -29,31 +22,17 @@ const EnterModal = () => {
   const {
     control,
     handleSubmit,
-    reset,
-    clearErrors,
-    formState: { isValid, isSubmitting },
+    formState: { isValid },
   } = form;
 
-  const { mutate: postEnterRoom } = usePostEnterRoom();
-
-  const [open, setOpen] = useState(false);
-
-  const onOpenChange = () => {
-    setOpen((prev) => !prev);
-    reset();
-    clearErrors();
-  };
+  const { mutate: postEnterRoom, isPending } = usePostEnterRoom();
 
   const onSubmit = ({ room_id, password }: EnterRoomForm) => {
     postEnterRoom({ room_id, password });
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        <Button className="w-full">입장하기</Button>
-      </DialogTrigger>
-
+    <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>게임 입장</DialogHeader>
 
@@ -99,7 +78,7 @@ const EnterModal = () => {
           <DialogClose asChild>
             <Button variant="outline">닫기</Button>
           </DialogClose>
-          <Button form="enter-room-form" type="submit" loading={isSubmitting} disabled={!isValid}>
+          <Button form="enter-room-form" type="submit" loading={isPending} disabled={!isValid}>
             입장
           </Button>
         </DialogFooter>

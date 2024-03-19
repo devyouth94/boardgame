@@ -1,32 +1,20 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { useGetUserInfo } from "~/features/auth/service/auth.query";
-import {
-  GAME_TYPE,
-  createRoomSchema,
-  type CreateRoomForm,
-} from "~/features/rooms/model/rooms.schema";
+import { type ModalProps } from "~/features/modal/model/modal.schema";
+import { createRoomSchema, type CreateRoomForm } from "~/features/rooms/model/rooms.schema";
 import { usePostRoom } from "~/features/rooms/service/rooms.query";
+
+import { GAME_TYPE } from "~/entities/rooms/consts";
 
 import { getArrayToObject } from "~/shared/lib/data-format";
 import { Button } from "~/shared/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTrigger,
-} from "~/shared/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader } from "~/shared/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "~/shared/ui/form";
 import { Input } from "~/shared/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/shared/ui/select";
 
-const CreateModal = () => {
-  const { data: userInfo, isFetching } = useGetUserInfo();
-
+const CreateModal = ({ open, onClose }: ModalProps) => {
   const form = useForm<CreateRoomForm>({
     resolver: zodResolver(createRoomSchema),
     defaultValues: {
@@ -42,44 +30,17 @@ const CreateModal = () => {
   const {
     control,
     handleSubmit,
-    reset,
-    clearErrors,
-    formState: { isValid, isSubmitting },
+    formState: { isValid },
   } = form;
 
-  const { mutate: postRoom } = usePostRoom();
-
-  const [open, setOpen] = useState(false);
-
-  const onOpenChange = () => {
-    setOpen((prev) => !prev);
-    reset();
-    clearErrors();
-  };
+  const { mutate: postRoom, isPending } = usePostRoom();
 
   const onSubmit = ({ game_type, players, password }: CreateRoomForm) => {
-    const { min_players, max_players } = players;
-
-    if (!isFetching && userInfo) {
-      postRoom(
-        {
-          game_type,
-          min_players,
-          max_players,
-          password,
-          owner_id: userInfo.id!,
-        },
-        { onSuccess: onOpenChange },
-      );
-    }
+    postRoom({ game_type, ...players, password });
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        <Button className="w-full">생성하기</Button>
-      </DialogTrigger>
-
+    <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>게임 생성</DialogHeader>
 
@@ -172,7 +133,7 @@ const CreateModal = () => {
           <DialogClose asChild>
             <Button variant="outline">취소</Button>
           </DialogClose>
-          <Button form="create-room-form" type="submit" loading={isSubmitting} disabled={!isValid}>
+          <Button form="create-room-form" type="submit" loading={isPending} disabled={!isValid}>
             생성
           </Button>
         </DialogFooter>
